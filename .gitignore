@@ -1,0 +1,18 @@
+# Secretos y credenciales
+.env
+*.key
+*credentials*
+
+# Entorno Python
+venv/
+__pycache__/
+*.pyc
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+
+# Artefactos generados
+*.log
+data/processed/*.tmp
