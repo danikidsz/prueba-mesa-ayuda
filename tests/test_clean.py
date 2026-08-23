@@ -4,7 +4,7 @@ Pruebas de la normalización de fechas, con casos reales tomados del
 CSV entregado y casos de borde inventados a propósito.
 """
 from datetime import date
-from src.clean import normalize_date, normalize_category
+from src.clean import normalize_date, normalize_category, remove_duplicates
 
 
 def test_formato_iso():
@@ -74,3 +74,48 @@ def test_categoria_none_cae_en_sin_clasificar():
 
 def test_categoria_desconocida_cae_en_sin_clasificar():
     assert normalize_category("algo que nunca habiamos visto") == "Sin clasificar"
+
+
+def test_sin_duplicados_no_cambia_nada():
+    tickets = [
+        {"id": "TK-001", "estado": "Abierto"},
+        {"id": "TK-002", "estado": "Cerrado"},
+    ]
+    resultado, duplicados = remove_duplicates(tickets)
+    assert len(resultado) == 2
+    assert duplicados == 0
+ 
+ 
+def test_deduplica_manteniendo_el_ultimo_estado():
+    tickets = [
+        {"id": "TK-001", "estado": "Abierto"},
+        {"id": "TK-001", "estado": "Cerrado"},  # misma id, aparece despues
+    ]
+    resultado, duplicados = remove_duplicates(tickets)
+    assert len(resultado) == 1
+    assert resultado[0]["estado"] == "Cerrado"
+    assert duplicados == 1
+ 
+ 
+def test_cuenta_varios_duplicados():
+    tickets = [
+        {"id": "TK-001", "estado": "Abierto"},
+        {"id": "TK-001", "estado": "En proceso"},
+        {"id": "TK-001", "estado": "Cerrado"},
+    ]
+    resultado, duplicados = remove_duplicates(tickets)
+    assert len(resultado) == 1
+    assert resultado[0]["estado"] == "Cerrado"
+    assert duplicados == 2
+ 
+ 
+def test_filas_sin_id_no_se_pierden():
+    tickets = [
+        {"id": "", "estado": "Abierto"},
+        {"id": "", "estado": "Cerrado"},
+    ]
+    resultado, duplicados = remove_duplicates(tickets)
+    # ninguna tiene id, así que ninguna se considera "duplicada" entre sí
+    assert len(resultado) == 2
+    assert duplicados == 0
+ 

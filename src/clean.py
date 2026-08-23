@@ -106,4 +106,30 @@ def normalize_category(raw):
 
     return CATEGORIAS.get(valor, "Sin clasificar")
 
-    
+
+def remove_duplicates(tickets):
+    """
+    Elimina duplicados por id, conservando la última aparición de cada uno.
+ 
+    tickets: lista de diccionarios (una fila del CSV cada uno).
+ 
+    Las filas sin id (campo vacío) no se descartan aquí -- se dejan pasar
+    tal cual, porque la falta de id es un problema de validación, no de
+    duplicados, y se maneja en otra función.
+ 
+    Devuelve una tupla: (lista_sin_duplicados, cantidad_de_duplicados_eliminados)
+    """
+    vistos = {}
+    duplicados = 0
+ 
+    for i, ticket in enumerate(tickets):
+        id_ticket = (ticket.get("id") or "").strip()
+        clave = id_ticket if id_ticket else f"__sin_id_{i}"
+ 
+        if clave in vistos:
+            duplicados += 1
+ 
+        vistos[clave] = ticket  # si ya existía, se sobrescribe con la última versión
+ 
+    return list(vistos.values()), duplicados
+ 
