@@ -66,3 +66,44 @@ def normalize_date(raw):
 
     # Ningún formato reconocido
     return None
+
+
+CATEGORIAS = {
+    "hardware": "Hardware",
+    "software": "Software",
+    "red": "Red",
+    "conectividad": "Red",
+    "accesos": "Accesos",
+    "gestion de accesos": "Accesos",
+    "gestión de accesos": "Accesos",
+    "incidente": "Incidente",
+    "viaticos": "Viáticos",
+    "viáticos": "Viáticos",
+    "vacaciones": "Vacaciones",
+    "nomina": "Nómina",
+    "nómina": "Nómina",
+    "reportes": "Reportes",
+    "compras": "Compras",
+    "sin clasificar": "Sin clasificar",
+}
+
+
+def normalize_category(raw):
+    """
+    Normaliza una categoría a la lista maestra del negocio.
+
+    Ignora mayúsculas/minúsculas y espacios sobrantes. Cualquier valor
+    vacío o no reconocido en CATEGORIAS se marca como 'Sin clasificar'
+    en lugar de descartarse -- puede ser información valiosa que
+    todavía no tiene una categoría asignada.
+    """
+    if raw is None:
+        return "Sin clasificar"
+
+    valor = str(raw).strip().lower()
+    if not valor:
+        return "Sin clasificar"
+
+    return CATEGORIAS.get(valor, "Sin clasificar")
+
+    
