@@ -88,3 +88,14 @@ def listar_solicitudes(
     if estado:
         items = [s for s in items if s["estado"].lower() == estado.lower()]
     return items[:limite]
+
+from src.clasificador import clasificar_solicitud
+
+
+class TextoClasificar(BaseModel):
+    texto: str = Field(..., min_length=5, max_length=4000)
+
+
+@app.post("/clasificar")
+def clasificar(cuerpo: TextoClasificar):
+    return clasificar_solicitud(cuerpo.texto)
