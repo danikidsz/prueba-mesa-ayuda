@@ -17,3 +17,4 @@ __pycache__/
 *.log
 data/processed/*.tmp
 data/tickets.db
+data/processed/indice_politicas.json
