@@ -1,0 +1,89 @@
+<!-- frontend/src/app/app.html  (REEMPLAZA todo el contenido actual) -->
+<div class="contenedor">
+  <header>
+    <h1>Mesa de Ayuda</h1>
+    <p class="sub">La Fortuna S.A. · Prueba técnica de nivelación</p>
+  </header>
+
+  @if (error()) {
+    <div class="alerta">{{ error() }}</div>
+  }
+
+  <section class="tarjeta">
+    <h2>Nueva solicitud</h2>
+    <div class="grid">
+      <input [(ngModel)]="nueva.asunto" placeholder="Asunto (mín. 5 caracteres)" />
+      <input [(ngModel)]="nueva.area" placeholder="Área" />
+      <input [(ngModel)]="nueva.solicitante" placeholder="Correo del solicitante" />
+      <input [(ngModel)]="nueva.descripcion" placeholder="Descripción (opcional)" />
+    </div>
+    <button (click)="crear()" [disabled]="creando()">
+      {{ creando() ? 'Creando...' : 'Crear solicitud' }}
+    </button>
+  </section>
+
+  <section class="tarjeta">
+    <h2>Clasificación asistida por IA</h2>
+    <p class="ayuda">
+      Escriba el problema en lenguaje natural. Si el proveedor de IA no responde,
+      el sistema clasifica por reglas y lo indica en el origen.
+    </p>
+    <input
+      class="ancho"
+      [(ngModel)]="textoClasificar"
+      placeholder="Ej: mi computador no enciende y no puedo trabajar"
+    />
+    <button (click)="clasificar()" [disabled]="clasificando()">
+      {{ clasificando() ? 'Clasificando...' : 'Clasificar' }}
+    </button>
+
+    @if (clasificacion(); as c) {
+      <div class="resultado">
+        <span class="etiqueta">{{ c.categoria }}</span>
+        <span class="etiqueta">{{ c.prioridad }}</span>
+        <span class="origen" [class.degradado]="c.origen !== 'ia'">
+          origen: {{ c.origen }}
+        </span>
+      </div>
+    }
+  </section>
+
+  <section class="tarjeta">
+    <h2>Solicitudes</h2>
+    <div class="filtros">
+      <input [(ngModel)]="filtroArea" placeholder="Filtrar por área" />
+      <input [(ngModel)]="filtroEstado" placeholder="Filtrar por estado" />
+      <button (click)="cargar()">Buscar</button>
+      <button class="secundario" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+
+    @if (cargando()) {
+      <p class="ayuda">Cargando...</p>
+    } @else if (solicitudes().length === 0) {
+      <p class="ayuda">No hay solicitudes que coincidan con el filtro.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Asunto</th>
+            <th>Área</th>
+            <th>Solicitante</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of solicitudes(); track s.id) {
+            <tr>
+              <td class="mono">{{ s.id }}</td>
+              <td>{{ s.asunto }}</td>
+              <td>{{ s.area }}</td>
+              <td>{{ s.solicitante }}</td>
+              <td><span class="estado">{{ s.estado }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+</div>
