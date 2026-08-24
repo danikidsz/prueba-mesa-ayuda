@@ -80,11 +80,19 @@ def resumir_por_area(tickets, acumulador=None):
     return acumulador
 
 
+
 def contar_reaperturas(tickets):
     """Cuenta cuántos tickets fueron reabiertos al menos una vez."""
+    # Causa raiz S3: se comparaba estado == "reabierto" (sensible a
+    # mayusculas y ciego a tickets reabiertos que ya se cerraron). La
+    # fuente confiable es la columna reaperturas, no el estado actual.
     total = 0
     for t in tickets:
-        if t.get("estado") == "reabierto":
+        try:
+            reaperturas = int(t.get("reaperturas") or 0)
+        except (ValueError, TypeError):
+            reaperturas = 0
+        if reaperturas > 0:
             total += 1
     return total
 
