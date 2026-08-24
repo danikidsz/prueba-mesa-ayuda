@@ -16,3 +16,4 @@ __pycache__/
 # Artefactos generados
 *.log
 data/processed/*.tmp
+data/tickets.db
