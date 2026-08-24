@@ -132,4 +132,64 @@ def remove_duplicates(tickets):
         vistos[clave] = ticket  # si ya existía, se sobrescribe con la última versión
  
     return list(vistos.values()), duplicados
+
+
+"""
+Agrega esto a src/clean.py, debajo de remove_duplicates().
+"""
+
+CAMPOS_OBLIGATORIOS = ["id", "fecha_creacion", "area", "categoria", "prioridad", "solicitante", "asunto"]
+
+
+def validate_record(ticket):
+    """
+    Valida que un ticket tenga todos los campos obligatorios.
+
+    Obligatorios: id, fecha_creacion, area, categoria, prioridad,
+    solicitante, asunto. Un campo vacío o solo espacios cuenta como faltante.
+    También se valida que fecha_creacion, si viene, tenga un formato
+    reconocible (usa normalize_date).
+
+    Devuelve una tupla: (es_valido: bool, razones: list[str])
+    Si es_valido es False, razones explica por qué, para poder
+    registrar el motivo en el archivo de descartes.
+    """
+    razones = []
+
+    for campo in CAMPOS_OBLIGATORIOS:
+        valor = str(ticket.get(campo) or "").strip()
+        if not valor:
+            razones.append(f"falta el campo obligatorio '{campo}'")
+
+    fecha_raw = ticket.get("fecha_creacion")
+    if fecha_raw and normalize_date(fecha_raw) is None:
+        razones.append("fecha_creacion no tiene un formato reconocido")
+
+    return (len(razones) == 0, razones)
+
+
+def apply_defaults(ticket):
+    """
+    Rellena los campos opcionales vacíos con un valor por defecto explícito.
+
+    No modifica el diccionario original -- devuelve una copia. Así,
+    ningún dato faltante queda simplemente vacío o ausente: queda
+    marcado de forma visible (ej. 'Sin estado'), para que se note que
+    faltaba, en vez de perderse silenciosamente.
+    """
+    resultado = dict(ticket)
+
+    if not str(resultado.get("descripcion") or "").strip():
+        resultado["descripcion"] = ""
+
+    if not str(resultado.get("canal") or "").strip():
+        resultado["canal"] = "Sin canal"
+
+    if not str(resultado.get("estado") or "").strip():
+        resultado["estado"] = "Sin estado"
+
+    if not str(resultado.get("reaperturas") or "").strip():
+        resultado["reaperturas"] = "0"
+
+    return resultado
  

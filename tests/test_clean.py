@@ -4,7 +4,10 @@ Pruebas de la normalización de fechas, con casos reales tomados del
 CSV entregado y casos de borde inventados a propósito.
 """
 from datetime import date
-from src.clean import normalize_date, normalize_category, remove_duplicates
+from src.clean import (
+    normalize_date, normalize_category, remove_duplicates,
+     validate_record, apply_defaults, 
+     )
 
 
 def test_formato_iso():
@@ -119,3 +122,86 @@ def test_filas_sin_id_no_se_pierden():
     assert len(resultado) == 2
     assert duplicados == 0
  
+
+
+TICKET_COMPLETO = {
+    "id": "TK-001",
+    "fecha_creacion": "2025-03-08",
+    "area": "Comercial",
+    "categoria": "Hardware",
+    "prioridad": "Alta",
+    "solicitante": "usuario1@lafortuna.com.co",
+    "asunto": "Computador no enciende",
+    "descripcion": "",
+    "canal": "",
+    "estado": "",
+    "reaperturas": "",
+    "fecha_cierre": "",
+}
+
+
+def test_ticket_completo_es_valido():
+    valido, razones = validate_record(TICKET_COMPLETO)
+    assert valido is True
+    assert razones == []
+
+
+def test_falta_asunto_es_invalido():
+    ticket = dict(TICKET_COMPLETO)
+    ticket["asunto"] = ""
+    valido, razones = validate_record(ticket)
+    assert valido is False
+    assert "asunto" in razones[0]
+
+
+def test_falta_id_es_invalido():
+    ticket = dict(TICKET_COMPLETO)
+    ticket["id"] = ""
+    valido, razones = validate_record(ticket)
+    assert valido is False
+
+
+def test_descripcion_vacia_no_invalida_el_registro():
+    # descripcion no está en CAMPOS_OBLIGATORIOS -- debe seguir siendo valido
+    ticket = dict(TICKET_COMPLETO)
+    ticket["descripcion"] = ""
+    valido, razones = validate_record(ticket)
+    assert valido is True
+
+
+def test_fecha_creacion_con_formato_invalido_es_invalido():
+    ticket = dict(TICKET_COMPLETO)
+    ticket["fecha_creacion"] = "fecha rara"
+    valido, razones = validate_record(ticket)
+    assert valido is False
+
+
+def test_reporta_varios_campos_faltantes_a_la_vez():
+    ticket = dict(TICKET_COMPLETO)
+    ticket["id"] = ""
+    ticket["area"] = ""
+    valido, razones = validate_record(ticket)
+    assert valido is False
+    assert len(razones) == 2
+
+
+def test_apply_defaults_rellena_campos_vacios():
+    ticket = dict(TICKET_COMPLETO)
+    resultado = apply_defaults(ticket)
+    assert resultado["descripcion"] == ""
+    assert resultado["canal"] == "Sin canal"
+    assert resultado["estado"] == "Sin estado"
+    assert resultado["reaperturas"] == "0"
+
+
+def test_apply_defaults_no_modifica_el_original():
+    ticket = dict(TICKET_COMPLETO)
+    apply_defaults(ticket)
+    assert ticket["canal"] == ""  # el original no cambió
+
+
+def test_apply_defaults_respeta_valores_ya_presentes():
+    ticket = dict(TICKET_COMPLETO)
+    ticket["estado"] = "Abierto"
+    resultado = apply_defaults(ticket)
+    assert resultado["estado"] == "Abierto"
