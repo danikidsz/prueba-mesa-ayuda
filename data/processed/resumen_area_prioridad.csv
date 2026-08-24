@@ -1,0 +1,113 @@
+area,prioridad,total
+Aplicaciones,1-Alta,14
+Aplicaciones,2-Media,12
+Aplicaciones,3-Baja,12
+Aplicaciones,ALTA,20
+Aplicaciones,Alta,16
+Aplicaciones,Baja,11
+Aplicaciones,CRITICA,18
+Aplicaciones,Critica,17
+Aplicaciones,Crítica,16
+Aplicaciones,MEDIA,15
+Aplicaciones,Media,16
+Aplicaciones,alta,15
+Aplicaciones,baja,16
+Aplicaciones,media,13
+Calidad,1-Alta,18
+Calidad,2-Media,15
+Calidad,3-Baja,21
+Calidad,ALTA,12
+Calidad,Alta,15
+Calidad,Baja,14
+Calidad,CRITICA,20
+Calidad,Critica,19
+Calidad,Crítica,13
+Calidad,MEDIA,19
+Calidad,Media,12
+Calidad,alta,18
+Calidad,baja,19
+Calidad,media,19
+Comercial,1-Alta,18
+Comercial,2-Media,16
+Comercial,3-Baja,6
+Comercial,ALTA,25
+Comercial,Alta,20
+Comercial,Baja,14
+Comercial,CRITICA,22
+Comercial,Critica,16
+Comercial,Crítica,16
+Comercial,MEDIA,11
+Comercial,Media,12
+Comercial,alta,24
+Comercial,baja,11
+Comercial,media,16
+Compras,1-Alta,20
+Compras,2-Media,14
+Compras,3-Baja,20
+Compras,ALTA,21
+Compras,Alta,14
+Compras,Baja,16
+Compras,CRITICA,16
+Compras,Critica,17
+Compras,Crítica,10
+Compras,MEDIA,10
+Compras,Media,12
+Compras,alta,15
+Compras,baja,21
+Compras,media,14
+Contabilidad,1-Alta,15
+Contabilidad,2-Media,16
+Contabilidad,3-Baja,13
+Contabilidad,ALTA,19
+Contabilidad,Alta,18
+Contabilidad,Baja,17
+Contabilidad,CRITICA,11
+Contabilidad,Critica,14
+Contabilidad,Crítica,15
+Contabilidad,MEDIA,17
+Contabilidad,Media,16
+Contabilidad,alta,23
+Contabilidad,baja,14
+Contabilidad,media,6
+Infraestructura,1-Alta,19
+Infraestructura,2-Media,18
+Infraestructura,3-Baja,18
+Infraestructura,ALTA,14
+Infraestructura,Alta,15
+Infraestructura,Baja,21
+Infraestructura,CRITICA,12
+Infraestructura,Critica,17
+Infraestructura,Crítica,18
+Infraestructura,MEDIA,20
+Infraestructura,Media,20
+Infraestructura,alta,14
+Infraestructura,baja,18
+Infraestructura,media,16
+Operaciones,1-Alta,12
+Operaciones,2-Media,17
+Operaciones,3-Baja,15
+Operaciones,ALTA,16
+Operaciones,Alta,17
+Operaciones,Baja,15
+Operaciones,CRITICA,11
+Operaciones,Critica,12
+Operaciones,Crítica,14
+Operaciones,MEDIA,18
+Operaciones,Media,16
+Operaciones,alta,10
+Operaciones,baja,9
+Operaciones,media,17
+Talento Humano,1-Alta,14
+Talento Humano,2-Media,22
+Talento Humano,3-Baja,15
+Talento Humano,ALTA,12
+Talento Humano,Alta,10
+Talento Humano,Baja,16
+Talento Humano,CRITICA,9
+Talento Humano,Critica,16
+Talento Humano,Crítica,10
+Talento Humano,MEDIA,24
+Talento Humano,Media,21
+Talento Humano,alta,20
+Talento Humano,baja,21
+Talento Humano,media,16
