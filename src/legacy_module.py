@@ -59,7 +59,9 @@ def filtrar_por_periodo(tickets, inicio, fin):
         fc = parsear_fecha(t.get("fecha_creacion"))
         if fc is None:
             continue
-        if fc > inicio and fc < fin:
+        # Causa raiz S1: las comparaciones estrictas (> y <) excluian los
+        # tickets creados exactamente el primer o ultimo dia del periodo.
+        if inicio <= fc <= fin:
             seleccionados.append(t)
     return seleccionados
 
